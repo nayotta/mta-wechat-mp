@@ -8,6 +8,15 @@ import {
 	IWxGetVisitPageResult,
 	IWxGetVisitTrendResult
 } from './interface'
+import {
+	TAnalysisGetPerformanceDataDevice,
+	TAnalysisGetPerformanceDataDeviceLevel,
+	TAnalysisGetPerformanceDataModule,
+	TAnalysisGetPerformanceDataNetworktype,
+	TAnalysisGetRetainType,
+	TAnalysisGetSummaryType,
+	TAnalysisGetVisitTrendType
+} from './type'
 import { IMtaWechatMpRequestOption } from '../request/interface'
 import { MtaWechatMpRequest } from '../request'
 import { requestOptions } from './const'
@@ -25,7 +34,7 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 	 * 获取用户访问小程序留存
 	 */
 	public async getRetain (option: {
-		type: 'daily' | 'monthly' | 'weekly',
+		type: TAnalysisGetRetainType,
 		begin: string | number | Date,
 		end: string | number | Date
 	}) {
@@ -58,7 +67,7 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 	 * 用户访问小程序数据概况
 	 */
 	public async getSummary (option: {
-		type: 'daily',
+		type: TAnalysisGetSummaryType,
 		begin: string | number | Date,
 		end: string | number | Date
 	}) {
@@ -94,7 +103,7 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 	 * 获取用户访问小程序数据趋势
 	 */
 	public async getVisitTrend (option: {
-		type: 'daily' | 'monthly' | 'weekly',
+		type: TAnalysisGetVisitTrendType,
 		begin: string | number | Date,
 		end: string | number | Date
 	}) {
@@ -138,11 +147,11 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 	public async getPerformanceData (option: {
 		begin: string | number | Date,
 		end: string | number | Date,
-		module: 'open_rate' | 'time_in_each_stage' | 'time_page_switching' | 'memory_indicator' | 'memory_exception',
+		module: TAnalysisGetPerformanceDataModule,
 		params: {
-			networktype?: ('all' | '3g' | '4g' | 'wifi')[],
-			deviceLevel?: ('all' | 'high_end' | 'mid_end' | 'low_end')[],
-			device?: ('all' | 'ios' | 'android')[]
+			networktype?: (TAnalysisGetPerformanceDataNetworktype)[],
+			device?: (TAnalysisGetPerformanceDataDevice)[],
+			deviceLevel?: (TAnalysisGetPerformanceDataDeviceLevel)[]
 		}
 	}) {
 		const { begin, end, module, params } = option

@@ -53,10 +53,10 @@ export class MtaWechatMpAuth {
 	 *  wechat miniprogram auth access token
 	 * 获取小程序全局唯一后台接口调用凭据（access_token）
 	 */
-	public getAccessToken (): Promise<{
+	public getAccessToken (): Promise<Error | {
 		accessToken: string,
 		expiresIn?: number
-	} | Error> {
+	}> {
 		return new Promise((resolve, reject) => {
 			const { _grantType, _appid, _secret } = this
 			axios(`${this.wechatApiHost}${this.requestOptions.getAccessToken.url}?grant_type=${_grantType}&appid=${_appid}&secret=${_secret}`, {

@@ -1,6 +1,6 @@
 {
   "name": "@nayotta/mta-wechat-mp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "wechat miniprogram resources sdk for javascript/typescript",
   "main": "lib/index.js",
   "exports": {

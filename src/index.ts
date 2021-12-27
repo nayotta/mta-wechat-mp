@@ -2,6 +2,10 @@ import { MtaWechatMpAnalysis } from './analysis'
 import { MtaWechatMpAuth } from './auth'
 import { MtaWechatMpCloud } from './cloud'
 
+// export types
+export * from './analysis/type'
+export * from './cloud/database/type'
+
 export class MtaWechatMp {
 	public grantType: string
 	public appid: string

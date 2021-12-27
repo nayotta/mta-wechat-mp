@@ -10,6 +10,12 @@ import {
 	IWxCloudDbQueryResult,
 	IWxCloudDbUpdateResult
 } from './interface'
+import {
+	TDbMigrateExportFileType,
+	TDbMigrateImportConflictMode,
+	TDbMigrateImportFileType,
+	TDbUpdateIndexDirection
+} from './type'
 import { IMtaWechatMpRequestOption } from '../../request/interface'
 import { MtaWechatMpRequest } from '../../request'
 import { requestOptions } from './const'
@@ -34,9 +40,9 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	public async migrateImport (option: {
 		collectionName: string,
 		filePath: string,
-		fileType: 'json' | 'csv',
+		fileType: TDbMigrateImportFileType,
 		stopOnError: boolean,
-		conflictMode: 'insert' | 'upsert'
+		conflictMode: TDbMigrateImportConflictMode
 	}) {
 		const { collectionName, filePath, fileType, stopOnError, conflictMode } = option
 		const fileTypeCode = {
@@ -71,7 +77,7 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async migrateExport (option: {
 		filePath: string,
-		fileType: 'json' | 'csv',
+		fileType: TDbMigrateExportFileType,
 		query: string
 	}) {
 		const { filePath, fileType, query } = option
@@ -132,7 +138,7 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 			unique: boolean,
 			keys: {
 				name: string,
-				direction: 'asc' | 'desc' | '2dsphere'
+				direction: TDbUpdateIndexDirection
 			}[]
 		}[],
 		dropIndexes: {
@@ -209,7 +215,20 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	public async collectionGet (option: {
 		limit: number,
 		offset: number
-	}) {
+	}): Promise<Error | {
+		pager: {
+			offset: number,
+			limit: number,
+			total: number
+		},
+		collections: {
+			name: string,
+			count: number,
+			size: number,
+			indexCount: number,
+			indexSize: number
+		}[]
+	}> {
 		const { limit, offset } = option
 		const res = await this._request<IWxCloudDbCollectionGetResult>({
 			...this.requestOptions.databaseCollectionGet,
@@ -245,7 +264,9 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async add (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		idList: string[]
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbAddResult>({
 			...this.requestOptions.databaseAdd,
@@ -266,7 +287,9 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async delete (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		deleted: number
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbDeleteResult>({
 			...this.requestOptions.databaseDelete,
@@ -287,7 +310,11 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async update (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		matched: number,
+		modified: number,
+		id?: string
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbUpdateResult>({
 			...this.requestOptions.databaseUpdate,
@@ -315,7 +342,14 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async query <T> (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		pager: {
+			total: number,
+			offset: number,
+			limit: number
+		},
+		data: (T & {})[]
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbQueryResult>({
 			...this.requestOptions.databaseQuery,
@@ -346,7 +380,9 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async aggregate <T> (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		data?: (T & {})[]
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbAggregateResult>({
 			...this.requestOptions.databaseAggregate,
@@ -370,7 +406,9 @@ export class MtaWechatMpCloudDatabase extends MtaWechatMpRequest {
 	 */
 	public async count (option: {
 		query: string
-	}) {
+	}): Promise<Error | {
+		count: number
+	}> {
 		const { query } = option
 		const res = await this._request<IWxCloudDbCountResult>({
 			...this.requestOptions.databaseAggregate,

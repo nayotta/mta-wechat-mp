@@ -4,3 +4,8 @@ export interface IWxGetAccessTokenResult {
 	'access_token'?: string,
 	'expires_in'?: number
 }
+
+export interface IAuthGetAccessTokenResult {
+	accessToken?: string,
+	expiresIn?: number
+}
