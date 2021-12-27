@@ -42,7 +42,7 @@ const {
 } = mtaWechatMp.clouds.develop
 
 // 数据分析
-mtaWechatMp.analysis.queryVisitTrend({
+mtaWechatMp.analysis.getVisitTrend({
 	type: 'daily',
 	beginDete: '2021-12-22',
 	endDate: '2021-12-22'
