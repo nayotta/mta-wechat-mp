@@ -2,7 +2,6 @@ import { MockServer } from 'jest-mock-server'
 import { MtaWechatMpAuth } from '../src/auth'
 
 class MtaTestAuth extends MtaWechatMpAuth {
-	public grantType: string = this._grantType
 	public appid: string = this._appid
 	public secret: string = this._secret
 }
@@ -16,7 +15,6 @@ describe('Testing Auth module', () => {
 
 	it('basic', () => {
 		const mtaTestAuth = new MtaTestAuth({
-			grantType: 'client_credential',
 			appid: 'appid',
 			secret: 'secret',
 			accessToken: 'test_access_token',
@@ -30,7 +28,6 @@ describe('Testing Auth module', () => {
 				}
 			}
 		})
-		expect(mtaTestAuth.grantType).toBe('client_credential')
 		expect(mtaTestAuth.appid).toBe('appid')
 		expect(mtaTestAuth.secret).toBe('secret')
 		expect(mtaTestAuth.accessToken).toBe('test_access_token')
@@ -50,7 +47,6 @@ describe('Testing Auth module', () => {
 		})
 		const url = server.getURL()
 		const mtaTestAuth = new MtaTestAuth({
-			grantType: 'client_credential',
 			appid: 'appid',
 			secret: 'secret',
 			proxy: {
@@ -83,7 +79,6 @@ describe('Testing Auth module', () => {
 		})
 		const url = server.getURL()
 		const mtaTestAuth = new MtaTestAuth({
-			grantType: 'client_credential',
 			appid: 'appid',
 			secret: 'secret',
 			proxy: {
@@ -112,7 +107,6 @@ describe('Testing Auth module', () => {
 		})
 		const url = server.getURL()
 		const mtaTestAuth = new MtaTestAuth({
-			grantType: 'client_credential',
 			appid: 'appid',
 			secret: 'secret',
 			proxy: {

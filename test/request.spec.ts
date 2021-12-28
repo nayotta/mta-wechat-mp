@@ -3,7 +3,6 @@ import { MtaWechatMpAuth } from '../src/auth'
 import { MtaWechatMpRequest } from '../src/request'
 
 class MtaTestRequest extends MtaWechatMpRequest {
-	public grantType: string = this._grantType
 	public appid: string = this._appid
 	public secret: string = this._secret
 	public request = this._request
@@ -17,34 +16,27 @@ describe('Testing Request module', () => {
 	beforeEach(() => server.reset())
 
 	it('basic', () => {
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret
 			})
 		})
-		expect(mtaTestRequest.grantType).toBe(grantType)
 		expect(mtaTestRequest.appid).toBe(appid)
 		expect(mtaTestRequest.secret).toBe(secret)
 	})
 
 	it('merge request options', async () => {
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret
 			})
@@ -69,15 +61,12 @@ describe('Testing Request module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				proxy: {
@@ -104,15 +93,12 @@ describe('Testing Request module', () => {
 			ctx.status = 500
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				proxy: {
@@ -140,15 +126,12 @@ describe('Testing Request module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				proxy: {
@@ -192,15 +175,12 @@ describe('Testing Request module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_auth_token',
@@ -244,15 +224,12 @@ describe('Testing Request module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestRequest = new MtaTestRequest({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_auth_token',

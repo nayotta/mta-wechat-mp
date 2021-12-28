@@ -5,7 +5,6 @@ import { MtaWechatMpAnalysis } from '../src/analysis'
 import { MtaWechatMpAuth } from '../src/auth'
 
 class MtaTestAnalysis extends MtaWechatMpAnalysis {
-	public grantType: string = this._grantType
 	public appid: string = this._appid
 	public secret: string = this._secret
 	public auth: MtaWechatMpAuth = this._auth
@@ -19,21 +18,17 @@ describe('Testing Analysis module', () => {
 	beforeEach(() => server.reset())
 
 	it('basic', () => {
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token'
 			})
 		})
-		expect(mtaTestAnalysis.grantType).toBe(grantType)
 		expect(mtaTestAnalysis.appid).toBe(appid)
 		expect(mtaTestAnalysis.secret).toBe(secret)
 		expect(mtaTestAnalysis.auth.accessToken).toBe('test_access_token')
@@ -56,7 +51,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -69,11 +63,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -119,7 +111,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -132,11 +123,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -183,7 +172,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -196,11 +184,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -265,7 +251,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -278,11 +263,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -326,15 +309,12 @@ describe('Testing Analysis module', () => {
 
 	it('getPerformanceData params error', async () => {
 		const now = Date.now()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token'
@@ -399,7 +379,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -412,11 +391,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -509,7 +486,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -522,11 +498,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -567,7 +541,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -580,11 +553,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -630,7 +601,6 @@ describe('Testing Analysis module', () => {
 			}
 		})
 		const url = server.getURL()
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const requestOption: {
@@ -643,11 +613,9 @@ describe('Testing Analysis module', () => {
 			tokenInQuery: true
 		}
 		const mtaTestAnalysis = new MtaTestAnalysis({
-			grantType,
 			appid,
 			secret,
 			auth: new MtaWechatMpAuth({
-				grantType,
 				appid,
 				secret,
 				accessToken: 'test_access_token',

@@ -5,7 +5,6 @@ import { MtaWechatMpCloud } from '../src/cloud'
 
 describe('Testing MtaWechatMp', () => {
 	it('basic', () => {
-		const grantType = 'client_credential'
 		const appid = 'appid'
 		const secret = 'secret'
 		const cloudEnvs = {
@@ -16,14 +15,12 @@ describe('Testing MtaWechatMp', () => {
 			proxyUrl: 'http://localhost:2333/test'
 		}
 		const mtaWechatMp = new MtaWechatMp({
-			grantType,
 			appid,
 			secret,
 			cloudEnvs,
 			accessToken,
 			proxy
 		})
-		expect(mtaWechatMp.grantType).toBe(grantType)
 		expect(mtaWechatMp.appid).toBe(appid)
 		expect(mtaWechatMp.clouds.test).toBeInstanceOf(MtaWechatMpCloud)
 		expect(mtaWechatMp.auth).toBeInstanceOf(MtaWechatMpAuth)
