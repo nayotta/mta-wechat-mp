@@ -2,7 +2,6 @@ import { Method } from 'axios'
 import { MtaWechatMpAuth } from '../auth'
 
 export interface IMtaWechatMpRequestOption {
-	grantType: 'client_credential',
 	appid: string,
 	secret: string,
 	auth: MtaWechatMpAuth,

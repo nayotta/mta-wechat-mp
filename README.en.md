@@ -18,7 +18,6 @@ $ npm install @nayotta/mta-wechat-mp
 import { MtaWechatMp } from '@nayotta/mta-wechat-mp'
 
 const mtaWechatMp = new MtaWechatMp({
-	grantType: 'client_credential',
 	appid: 'your_app_id',
 	secret: 'your_app_secret',
 	cloudEnvs: {
@@ -27,7 +26,7 @@ const mtaWechatMp = new MtaWechatMp({
 	},
 	// warning: It is not recommended to operate on the client side
 	proxy: {
-		proxyUrl: 'http://localhost:2333/'
+		proxyUrl: 'http://localhost:2333/mp'
 	}
 })
 

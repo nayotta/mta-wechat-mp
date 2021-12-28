@@ -3,7 +3,7 @@ import { IWxGetAccessTokenResult } from './interface'
 import { requestOptions } from './const'
 
 export class MtaWechatMpAuth {
-	protected _grantType: string
+	protected _grantType: string = 'client_credential'
 	protected _appid: string
 	protected _secret: string
 	protected _proxy: {
@@ -22,7 +22,6 @@ export class MtaWechatMpAuth {
 	} = requestOptions
 
 	constructor (option: {
-		grantType: string,
 		appid: string,
 		secret: string,
 		accessToken?: string,
@@ -37,7 +36,6 @@ export class MtaWechatMpAuth {
 			}
 		}
 	}) {
-		this._grantType = option.grantType
 		this._appid = option.appid
 		this._secret = option.secret
 		this._proxy = option.proxy || {}

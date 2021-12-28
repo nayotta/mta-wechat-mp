@@ -7,7 +7,6 @@ export * from './analysis/type'
 export * from './cloud/database/type'
 
 export class MtaWechatMp {
-	public grantType: string
 	public appid: string
 
 	public proxy: {
@@ -23,7 +22,6 @@ export class MtaWechatMp {
 	public analysis: MtaWechatMpAnalysis
 
 	constructor (option: {
-		grantType: 'client_credential',
 		appid: string,
 		secret: string,
 		cloudEnvs: {
@@ -34,13 +32,11 @@ export class MtaWechatMp {
 			proxyUrl?: string
 		}
 	}) {
-		this.grantType = option.grantType
 		this.appid = option.appid
 		this.proxy = option.proxy || {}
 
 		// auth
 		this.auth = new MtaWechatMpAuth({
-			grantType: option.grantType,
 			appid: option.appid,
 			secret: option.secret,
 			proxy: option.proxy
@@ -49,7 +45,6 @@ export class MtaWechatMp {
 		// cloud instances
 		for (const cloudName in option.cloudEnvs) {
 			this.clouds[cloudName] = new MtaWechatMpCloud({
-				grantType: option.grantType,
 				appid: option.appid,
 				secret: option.secret,
 				env: option.cloudEnvs[cloudName],

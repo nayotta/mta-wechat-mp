@@ -3,7 +3,6 @@ import axios, { AxiosResponse, Method } from 'axios'
 import { MtaWechatMpAuth } from '../auth'
 
 export class MtaWechatMpRequest {
-	protected _grantType: string
 	protected _appid: string
 	protected _secret: string
 	protected _auth: MtaWechatMpAuth
@@ -17,7 +16,6 @@ export class MtaWechatMpRequest {
 	} = {}
 
 	constructor (option: IMtaWechatMpRequestOption) {
-		this._grantType = option.grantType
 		this._appid = option.appid
 		this._secret = option.secret
 		this.requestOptions = option.requestOptions || {}
