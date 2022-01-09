@@ -158,18 +158,19 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 
 		// params transform
 		const paramsKeys = Object.keys(params)
-		let paramsField = ''
-		let paramsValue = ''
-		if (paramsKeys.length > 1) {
+		if (!paramsKeys.every(item => ['networktype', 'device', 'deviceLevel'].includes(item))) {
 			return new Error('query params\'s value must be one of networktype/deviceLevel/device')
 		} else if (paramsKeys.length === 0) {
 			return new Error('query params\'s value empty')
-		} else {
-			paramsField = paramsKeys[0]
 		}
-		switch (paramsField) {
-			case 'networktype':
-				paramsValue = (params.networktype || []).map(item => {
+		const paramsArr: {
+			field: string,
+			value: string
+		}[] = []
+		if (params.networktype) {
+			paramsArr.push({
+				field: 'networktype',
+				value: (params.networktype || []).map(item => {
 					return {
 						all: '-1',
 						'3g': '3g',
@@ -177,57 +178,57 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 						wifi: 'wifi'
 					}[item]
 				}).join(',')
-				break
-			case 'deviceLevel':
-				// update params field value
-				paramsField = 'device_level'
-				paramsValue = (params.deviceLevel || []).map(item => {
-					return {
-						all: '-1',
-						high_end: '1',
-						mid_end: '2',
-						low_end: '3'
-					}[item]
-				}).join(',')
-				break
-			case 'device':
-				paramsValue = (params.device || []).map(item => {
+			})
+		}
+		if (params.device) {
+			paramsArr.push({
+				field: 'device',
+				value: (params.device || []).map(item => {
 					return {
 						all: '-1',
 						ios: '1',
 						android: '2'
 					}[item]
 				}).join(',')
-				break
-			default:
-				return new Error('query params\'s value must be one of networktype/deviceLevel/device')
+			})
+		}
+		if (params.deviceLevel) {
+			paramsArr.push({
+				field: 'device_level',
+				value: (params.deviceLevel || []).map(item => {
+					return {
+						all: '-1',
+						highEnd: '1',
+						midEnd: '2',
+						lowEnd: '3'
+					}[item]
+				}).join(',')
+			})
 		}
 
 		// module transform
 		const moduleCode = {
-			open_rate: 10016,
-			time_in_each_stage: 10017,
-			time_page_switching: 10021,
-			memory_indicator: 10022,
-			memory_exception: 10023
+			openRate: 10016,
+			timeInEachStage: 10017,
+			timePageSwitching: 10021,
+			memoryIndicator: 10022,
+			memoryException: 10023
 		}[module]
 
 		const res = await this._request<IWxGetPerformanceDataResult>({
 			...this.requestOptions.getPerformanceData,
 			data: {
 				time: {
-					begin_timestamp: dayjs(begin).format('YYYY-MM-DD HH:mm:ss'),
-					end_timestamp: dayjs(end).format('YYYY-MM-DD HH:mm:ss')
+					begin_timestamp: Math.round(new Date(begin).getTime() / 1000),
+					end_timestamp: Math.round(new Date(end).getTime() / 1000)
 				},
 				module: moduleCode,
-				params: {
-					field: paramsField,
-					value: paramsValue
-				}
+				params: paramsArr
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
-		const { tables, count } = res
+		const { body } = res.data
+		const { tables, count } = body
 		return {
 			tables,
 			count

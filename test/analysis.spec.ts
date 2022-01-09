@@ -228,26 +228,30 @@ describe('Testing Analysis module', () => {
 			requestBody = ctx.request.body
 			ctx.status = 200
 			ctx.body = {
-				tables: [{
-					id: 'memorydiff',
-					lines: [{
-						fields: [{
-							refdate: dayjs(now).format('YYYYMMDD'),
-							value: 70.7778
-						}]
-					}],
-					zh: '内存增长均值'
-				}, {
-					id: 'memory',
-					lines: [{
-						fields: [{
-							refdate: dayjs(now).format('YYYYMMDD'),
-							value: 314
-						}]
-					}],
-					zh: '内存均值'
-				}],
-				count: 2
+				data: {
+					body: {
+						tables: [{
+							id: 'memorydiff',
+							lines: [{
+								fields: [{
+									refdate: dayjs(now).format('YYYYMMDD'),
+									value: 70.7778
+								}]
+							}],
+							zh: '内存增长均值'
+						}, {
+							id: 'memory',
+							lines: [{
+								fields: [{
+									refdate: dayjs(now).format('YYYYMMDD'),
+									value: 314
+								}]
+							}],
+							zh: '内存均值'
+						}],
+						count: 2
+					}
+				}
 			}
 		})
 		const url = server.getURL()
@@ -280,7 +284,7 @@ describe('Testing Analysis module', () => {
 		const res = await mtaTestAnalysis.getPerformanceData({
 			begin: now,
 			end: now,
-			module: 'memory_indicator',
+			module: 'memoryIndicator',
 			params: {
 				device: ['all', 'ios']
 			}
@@ -291,12 +295,12 @@ describe('Testing Analysis module', () => {
 		// request body
 		expect(requestBody).toBeInstanceOf(Object)
 		expect(requestBody.time).toBeInstanceOf(Object)
-		expect(requestBody.time.begin_timestamp).toBe(dayjs(now).format('YYYY-MM-DD HH:mm:ss'))
-		expect(requestBody.time.end_timestamp).toBe(dayjs(now).format('YYYY-MM-DD HH:mm:ss'))
+		expect(requestBody.time.begin_timestamp).toBe(Math.round(new Date(now).getTime() / 1000))
+		expect(requestBody.time.end_timestamp).toBe(Math.round(new Date(now).getTime() / 1000))
 		expect(typeof requestBody.module).toBe('number')
-		expect(requestBody.params).toBeInstanceOf(Object)
-		expect(requestBody.params.field).toBe('device')
-		expect(requestBody.params.value).toBe('-1,1')
+		expect(Array.isArray(requestBody.params)).toBe(true)
+		expect(requestBody.params[0].field).toBe('device')
+		expect(requestBody.params[0].value).toBe('-1,1')
 
 		// response body
 		expect(res.tables).toBeInstanceOf(Object)
@@ -323,27 +327,12 @@ describe('Testing Analysis module', () => {
 		const emptyParamsRes = await mtaTestAnalysis.getPerformanceData({
 			begin: now,
 			end: now,
-			module: 'memory_indicator',
+			module: 'memoryIndicator',
 			params: {}
 		}).catch((err: Error) => err)
 		expect(emptyParamsRes).toBeInstanceOf(Error)
 		if (emptyParamsRes instanceof Error) {
 			expect(emptyParamsRes.message).toBe('query params\'s value empty')
-		} else {
-			throw new Error('getPerformanceData result should be error')
-		}
-		const twoParamsRes = await mtaTestAnalysis.getPerformanceData({
-			begin: now,
-			end: now,
-			module: 'memory_indicator',
-			params: {
-				networktype: ['all'],
-				device: ['all']
-			}
-		}).catch((err: Error) => err)
-		expect(twoParamsRes).toBeInstanceOf(Error)
-		if (twoParamsRes instanceof Error) {
-			expect(twoParamsRes.message).toBe('query params\'s value must be one of networktype/deviceLevel/device')
 		} else {
 			throw new Error('getPerformanceData result should be error')
 		}
@@ -356,26 +345,30 @@ describe('Testing Analysis module', () => {
 			requestBody = ctx.request.body
 			ctx.status = 200
 			ctx.body = {
-				tables: [{
-					id: 'memorydiff',
-					lines: [{
-						fields: [{
-							refdate: dayjs(now).format('YYYYMMDD'),
-							value: 70.7778
-						}]
-					}],
-					zh: '内存增长均值'
-				}, {
-					id: 'memory',
-					lines: [{
-						fields: [{
-							refdate: dayjs(now).format('YYYYMMDD'),
-							value: 314
-						}]
-					}],
-					zh: '内存均值'
-				}],
-				count: 2
+				data: {
+					body: {
+						tables: [{
+							id: 'memorydiff',
+							lines: [{
+								fields: [{
+									refdate: dayjs(now).format('YYYYMMDD'),
+									value: 70.7778
+								}]
+							}],
+							zh: '内存增长均值'
+						}, {
+							id: 'memory',
+							lines: [{
+								fields: [{
+									refdate: dayjs(now).format('YYYYMMDD'),
+									value: 314
+								}]
+							}],
+							zh: '内存均值'
+						}],
+						count: 2
+					}
+				}
 			}
 		})
 		const url = server.getURL()
@@ -408,7 +401,7 @@ describe('Testing Analysis module', () => {
 		const deviceParamsRes = await mtaTestAnalysis.getPerformanceData({
 			begin: now,
 			end: now,
-			module: 'memory_indicator',
+			module: 'memoryIndicator',
 			params: {
 				device: ['all', 'ios', 'android']
 			}
@@ -417,14 +410,14 @@ describe('Testing Analysis module', () => {
 			throw deviceParamsRes
 		}
 		// request body
-		expect(requestBody.params).toBeInstanceOf(Object)
-		expect(requestBody.params.field).toBe('device')
-		expect(requestBody.params.value).toBe('-1,1,2')
+		expect(Array.isArray(requestBody.params)).toBe(true)
+		expect(requestBody.params[0].field).toBe('device')
+		expect(requestBody.params[0].value).toBe('-1,1,2')
 
 		const networktypeParamsRes = await mtaTestAnalysis.getPerformanceData({
 			begin: now,
 			end: now,
-			module: 'memory_indicator',
+			module: 'memoryIndicator',
 			params: {
 				networktype: ['all', '3g', '4g', 'wifi']
 			}
@@ -433,25 +426,25 @@ describe('Testing Analysis module', () => {
 			throw networktypeParamsRes
 		}
 		// request body
-		expect(requestBody.params).toBeInstanceOf(Object)
-		expect(requestBody.params.field).toBe('networktype')
-		expect(requestBody.params.value).toBe('-1,3g,4g,wifi')
+		expect(Array.isArray(requestBody.params)).toBe(true)
+		expect(requestBody.params[0].field).toBe('networktype')
+		expect(requestBody.params[0].value).toBe('-1,3g,4g,wifi')
 
 		const deviceLevelParamsRes = await mtaTestAnalysis.getPerformanceData({
 			begin: now,
 			end: now,
-			module: 'memory_indicator',
+			module: 'memoryIndicator',
 			params: {
-				deviceLevel: ['all', 'high_end', 'mid_end', 'low_end']
+				deviceLevel: ['all', 'highEnd', 'midEnd', 'lowEnd']
 			}
 		}).catch((err: Error) => err)
 		if (deviceLevelParamsRes instanceof Error) {
 			throw deviceLevelParamsRes
 		}
 		// request body
-		expect(requestBody.params).toBeInstanceOf(Object)
-		expect(requestBody.params.field).toBe('device_level')
-		expect(requestBody.params.value).toBe('-1,1,2,3')
+		expect(Array.isArray(requestBody.params)).toBe(true)
+		expect(requestBody.params[0].field).toBe('device_level')
+		expect(requestBody.params[0].value).toBe('-1,1,2,3')
 
 		expect(route).toHaveBeenCalledTimes(3)
 	})

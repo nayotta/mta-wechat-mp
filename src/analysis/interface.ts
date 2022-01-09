@@ -33,17 +33,21 @@ export interface IWxGetVisitTrendResult {
 }
 
 export interface IWxGetPerformanceDataResult {
-	tables: {
-		id: string,
-		lines: {
-			fields: {
-				refdate: string,
-				value: string
-			}[]
-		}[],
-		zh: string
-	}[],
-	count: number
+	data: {
+		body: {
+			tables: {
+				id: string,
+				lines: {
+					fields: {
+						refdate: string,
+						value: string
+					}[]
+				}[],
+				zh: string
+			}[],
+			count: number
+		}
+	}
 }
 
 export interface IWxGetUserProtraitVisitUvItem {
