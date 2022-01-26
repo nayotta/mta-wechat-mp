@@ -1,4 +1,3 @@
-import * as dayjs from 'dayjs'
 import {
 	IWxGetPerformanceDataResult,
 	IWxGetRetainResult,
@@ -19,14 +18,18 @@ import {
 } from './type'
 import { IMtaWechatMpRequestOption } from '../request/interface'
 import { MtaWechatMpRequest } from '../request'
+import { dayjs } from '../util'
 import { requestOptions } from './const'
 
 export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
-	constructor (option: IMtaWechatMpRequestOption) {
+	readonly tz: string
+
+	constructor (option: IMtaWechatMpRequestOption & { tz?: string }) {
 		super({
 			...option,
 			requestOptions: option.requestOptions || requestOptions
 		})
+		this.tz = option.tz || dayjs.tz.guess()
 	}
 
 	/**
@@ -49,8 +52,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 			method: 'post',
 			tokenInQuery: true,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
@@ -80,8 +83,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 			method: 'post',
 			tokenInQuery: true,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
@@ -118,8 +121,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 			method: 'post',
 			tokenInQuery: true,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
@@ -247,8 +250,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 		const res = await this._request<IWxGetUserProtraitResult>({
 			...this.requestOptions.getUserPortrait,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
@@ -272,8 +275,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 		const res = await this._request<IWxGetVisitDistributionResult>({
 			...this.requestOptions.getVisitDistribution,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res
@@ -301,8 +304,8 @@ export class MtaWechatMpAnalysis extends MtaWechatMpRequest {
 		const res = await this._request<IWxGetVisitPageResult>({
 			...this.requestOptions.getVisitPage,
 			data: {
-				begin_date: dayjs(begin).format('YYYYMMDD'),
-				end_date: dayjs(end).format('YYYYMMDD')
+				begin_date: dayjs(begin).tz(this.tz).format('YYYYMMDD'),
+				end_date: dayjs(end).tz(this.tz).format('YYYYMMDD')
 			}
 		}, true).catch((err: Error) => err)
 		if (res instanceof Error) return res

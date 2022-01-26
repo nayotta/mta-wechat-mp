@@ -1,8 +1,8 @@
-import * as dayjs from 'dayjs'
 import { Method } from 'axios'
 import { MockServer } from 'jest-mock-server'
 import { MtaWechatMpAnalysis } from '../src/analysis'
 import { MtaWechatMpAuth } from '../src/auth'
+import { dayjs } from '../src/util'
 
 class MtaTestAnalysis extends MtaWechatMpAnalysis {
 	public appid: string = this._appid

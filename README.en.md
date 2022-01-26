@@ -24,10 +24,12 @@ const mtaWechatMp = new MtaWechatMp({
 		develop: 'develop_cloud_env_id',
 		production: 'production_cloud_env_id'
 	},
-	// warning: It is not recommended to operate on the client side
+	// warning: It is not recommended to operate on the client side, optional
 	proxy: {
 		proxyUrl: 'http://localhost:2333/mp'
-	}
+	},
+	// optional timezone setting
+	tz: 'Asia/Shanghai'
 })
 
 // cloud

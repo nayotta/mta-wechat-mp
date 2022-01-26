@@ -24,10 +24,12 @@ const mtaWechatMp = new MtaWechatMp({
 		develop: 'develop_cloud_env_id',
 		production: 'production_cloud_env_id'
 	},
-	// 虽然支持代理，但不建议在客户端进行操作
+	// 可选，虽然支持代理，但不建议在客户端进行操作
 	proxy: {
 		proxyUrl: 'http://localhost:2333/mp'
-	}
+	},
+	// 设置时区，默认为本地时区
+	tz: 'Asia/Shanghai'
 })
 
 // 云开发资源

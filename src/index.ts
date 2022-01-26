@@ -1,25 +1,27 @@
 import { MtaWechatMpAnalysis } from './analysis'
 import { MtaWechatMpAuth } from './auth'
 import { MtaWechatMpCloud } from './cloud'
+import { dayjs } from './util'
 
 // export types
 export * from './analysis/type'
 export * from './cloud/database/type'
 
 export class MtaWechatMp {
-	public appid: string
+	readonly appid: string
+	readonly tz: string = dayjs.tz.guess()
 
-	public proxy: {
+	readonly proxy: {
 		proxyUrl?: string
 	} = {}
 
-	public auth: MtaWechatMpAuth
+	readonly auth: MtaWechatMpAuth
 
-	public clouds: {
+	readonly clouds: {
 		[name: string]: MtaWechatMpCloud
 	} = {}
 
-	public analysis: MtaWechatMpAnalysis
+	readonly analysis: MtaWechatMpAnalysis
 
 	constructor (option: {
 		appid: string,
@@ -30,10 +32,12 @@ export class MtaWechatMp {
 		accessToken?: string,
 		proxy?: {
 			proxyUrl?: string
-		}
+		},
+		tz?: string
 	}) {
 		this.appid = option.appid
 		this.proxy = option.proxy || {}
+		this.tz = option.tz || dayjs.tz.guess()
 
 		// auth
 		this.auth = new MtaWechatMpAuth({
