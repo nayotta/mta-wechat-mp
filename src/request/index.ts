@@ -1,11 +1,11 @@
 import { IMtaWechatMpRequestOption, IRequestOption, IWxResult } from './interface'
 import axios, { AxiosResponse, Method } from 'axios'
-import { MtaWechatMpAuth } from '../auth'
+import { MtaWechatMpTokener } from '../tokener'
 
 export class MtaWechatMpRequest {
 	protected _appid: string
 	protected _secret: string
-	protected _auth: MtaWechatMpAuth
+	protected _tokener: MtaWechatMpTokener
 
 	public requestOptions: {
 		[key: string]: {
@@ -19,14 +19,14 @@ export class MtaWechatMpRequest {
 		this._appid = option.appid
 		this._secret = option.secret
 		this.requestOptions = option.requestOptions || {}
-		this._auth = option.auth
+		this._tokener = option.tokener
 	}
 
-	protected async _request<T> (option: IRequestOption, unauthRetry?: boolean): Promise<IWxResult & T | Error> {
+	protected async _request<T> (option: IRequestOption, untokenerRetry?: boolean): Promise<IWxResult & T | Error> {
 		let accessTokenUpdated = false
-		if (!this._auth.accessToken) {
+		if (!this._tokener.accessToken) {
 			accessTokenUpdated = true
-			const updateAccessTokenRes = await this._auth.getAccessToken().catch((err: Error) => err)
+			const updateAccessTokenRes = await this._tokener.getAccessToken().catch((err: Error) => err)
 			if (updateAccessTokenRes instanceof Error) return updateAccessTokenRes
 		}
 		const {
@@ -39,12 +39,12 @@ export class MtaWechatMpRequest {
 		const queryWithAccessToken = tokenInQuery
 			? {
 				...query,
-				access_token: this._auth.accessToken
+				access_token: this._tokener.accessToken
 			}
 			: {
 				...query
 			}
-		const wholeUrl = this._auth.wechatApiHost + url + `${/\?/.test(url) ? '&' : '?'}${Object.entries(queryWithAccessToken).map(([key, value]) => {
+		const wholeUrl = this._tokener.wechatApiHost + url + `${/\?/.test(url) ? '&' : '?'}${Object.entries(queryWithAccessToken).map(([key, value]) => {
 				return `${key}=${value}`
 			}).join('&')}`
 		return new Promise((resolve, reject) => {
@@ -53,8 +53,8 @@ export class MtaWechatMpRequest {
 				data
 			}).then(async (res: AxiosResponse<IWxResult & T>) => {
 				const { errcode } = res.data || {}
-				if (!accessTokenUpdated && [40001, 42001, 41001, 40014].includes(errcode) && unauthRetry) {
-					const tokenRes = await this._auth.getAccessToken().catch((err: Error) => err)
+				if (!accessTokenUpdated && [40001, 42001, 41001, 40014].includes(errcode) && untokenerRetry) {
+					const tokenRes = await this._tokener.getAccessToken().catch((err: Error) => err)
 					if (tokenRes instanceof Error) {
 						reject(tokenRes)
 						return

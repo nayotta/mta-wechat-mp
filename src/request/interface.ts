@@ -1,10 +1,10 @@
 import { Method } from 'axios'
-import { MtaWechatMpAuth } from '../auth'
+import { MtaWechatMpTokener } from '../tokener'
 
 export interface IMtaWechatMpRequestOption {
 	appid: string,
 	secret: string,
-	auth: MtaWechatMpAuth,
+	tokener: MtaWechatMpTokener,
 	requestOptions?: {
 		[key: string]: {
 			url: string,

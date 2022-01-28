@@ -2,6 +2,7 @@ import { MtaWechatMp } from '../src'
 import { MtaWechatMpAnalysis } from '../src/analysis'
 import { MtaWechatMpAuth } from '../src/auth'
 import { MtaWechatMpCloud } from '../src/cloud'
+import { MtaWechatMpTokener } from '../src/tokener'
 
 describe('Testing MtaWechatMp', () => {
 	it('basic', () => {
@@ -25,5 +26,6 @@ describe('Testing MtaWechatMp', () => {
 		expect(mtaWechatMp.clouds.test).toBeInstanceOf(MtaWechatMpCloud)
 		expect(mtaWechatMp.auth).toBeInstanceOf(MtaWechatMpAuth)
 		expect(mtaWechatMp.analysis).toBeInstanceOf(MtaWechatMpAnalysis)
+		expect(mtaWechatMp.tokener).toBeInstanceOf(MtaWechatMpTokener)
 	})
 })

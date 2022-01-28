@@ -1,6 +1,6 @@
 import { MockServer } from 'jest-mock-server'
-import { MtaWechatMpAuth } from '../src/auth'
 import { MtaWechatMpRequest } from '../src/request'
+import { MtaWechatMpTokener } from '../src/tokener'
 
 class MtaTestRequest extends MtaWechatMpRequest {
 	public appid: string = this._appid
@@ -21,7 +21,7 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret
 			})
@@ -36,7 +36,7 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret
 			})
@@ -66,7 +66,7 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				proxy: {
@@ -98,7 +98,7 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				proxy: {
@@ -122,7 +122,7 @@ describe('Testing Request module', () => {
 			ctx.status = 200
 			ctx.body = {
 				errcode: 40001,
-				errmsg: 'unauthrization'
+				errmsg: 'untokenerrization'
 			}
 		})
 		const url = server.getURL()
@@ -131,7 +131,7 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				proxy: {
@@ -150,25 +150,25 @@ describe('Testing Request module', () => {
 			throw res
 		}
 		expect(res.errcode).toBe(40001)
-		expect(res.errmsg).toBe('unauthrization')
+		expect(res.errmsg).toBe('untokenerrization')
 		expect(route).toHaveBeenCalledTimes(1)
 	})
 
-	it('request success with unauth retry', async () => {
+	it('request success with untokener retry', async () => {
 		let count = 0
 		const testRoute = server.post('/test').mockImplementation((ctx) => {
 			ctx.status = 200
 			ctx.body = count <= 0
 				? {
 					errcode: 40001,
-					errmsg: 'unauthrization'
+					errmsg: 'untokenerrization'
 				}
 				: {
 					test: 'success'
 				}
 			count++
 		})
-		const authRoute = server.get('/auth').mockImplementationOnce((ctx) => {
+		const tokenerRoute = server.get('/tokener').mockImplementationOnce((ctx) => {
 			ctx.status = 200
 			ctx.body = {
 				access_token: 'test_access_token'
@@ -180,16 +180,16 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
-				accessToken: 'test_auth_token',
+				accessToken: 'test_tokener_token',
 				proxy: {
 					proxyUrl: url.origin
 				},
 				requestOptions: {
 					getAccessToken: {
-						url: '/auth',
+						url: '/tokener',
 						method: 'get'
 					}
 				}
@@ -206,18 +206,18 @@ describe('Testing Request module', () => {
 		}
 		expect(res.test).toBe('success')
 		expect(testRoute).toHaveBeenCalledTimes(2)
-		expect(authRoute).toHaveBeenCalledTimes(1)
+		expect(tokenerRoute).toHaveBeenCalledTimes(1)
 	})
 
-	it('request fail with unauth retry', async () => {
+	it('request fail with untokener retry', async () => {
 		const testRoute = server.post('/test').mockImplementation((ctx) => {
 			ctx.status = 200
 			ctx.body = {
 				errcode: 40001,
-				errmsg: 'unauthrization'
+				errmsg: 'untokenerrization'
 			}
 		})
-		const authRoute = server.get('/auth').mockImplementationOnce((ctx) => {
+		const tokenerRoute = server.get('/tokener').mockImplementationOnce((ctx) => {
 			ctx.status = 200
 			ctx.body = {
 				access_token: 'test_access_token'
@@ -229,16 +229,16 @@ describe('Testing Request module', () => {
 		const mtaTestRequest = new MtaTestRequest({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
-				accessToken: 'test_auth_token',
+				accessToken: 'test_tokener_token',
 				proxy: {
 					proxyUrl: url.origin
 				},
 				requestOptions: {
 					getAccessToken: {
-						url: '/auth',
+						url: '/tokener',
 						method: 'get'
 					}
 				}
@@ -254,8 +254,8 @@ describe('Testing Request module', () => {
 			throw res
 		}
 		expect(res.errcode).toBe(40001)
-		expect(res.errmsg).toBe('unauthrization')
+		expect(res.errmsg).toBe('untokenerrization')
 		expect(testRoute).toHaveBeenCalledTimes(2)
-		expect(authRoute).toHaveBeenCalledTimes(1)
+		expect(tokenerRoute).toHaveBeenCalledTimes(1)
 	})
 })

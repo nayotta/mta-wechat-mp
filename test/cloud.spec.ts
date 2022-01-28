@@ -1,8 +1,8 @@
-import { MtaWechatMpAuth } from '../src/auth'
 import { MtaWechatMpCloud } from '../src/cloud'
 import { MtaWechatMpCloudDatabase } from '../src/cloud/database'
 import { MtaWechatMpCloudFunction } from '../src/cloud/function'
 import { MtaWechatMpCloudStorage } from '../src/cloud/storage'
+import { MtaWechatMpTokener } from '../src/tokener'
 
 describe('Testing MtaWechatMpCloud', () => {
 	it('basic', () => {
@@ -13,7 +13,7 @@ describe('Testing MtaWechatMpCloud', () => {
 			appid,
 			secret,
 			env,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret
 			})

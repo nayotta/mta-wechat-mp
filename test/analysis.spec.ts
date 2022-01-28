@@ -1,13 +1,13 @@
 import { Method } from 'axios'
 import { MockServer } from 'jest-mock-server'
 import { MtaWechatMpAnalysis } from '../src/analysis'
-import { MtaWechatMpAuth } from '../src/auth'
+import { MtaWechatMpTokener } from '../src/tokener'
 import { dayjs } from '../src/util'
 
 class MtaTestAnalysis extends MtaWechatMpAnalysis {
 	public appid: string = this._appid
 	public secret: string = this._secret
-	public auth: MtaWechatMpAuth = this._auth
+	public tokener: MtaWechatMpTokener = this._tokener
 }
 
 describe('Testing Analysis module', () => {
@@ -23,7 +23,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token'
@@ -31,7 +31,7 @@ describe('Testing Analysis module', () => {
 		})
 		expect(mtaTestAnalysis.appid).toBe(appid)
 		expect(mtaTestAnalysis.secret).toBe(secret)
-		expect(mtaTestAnalysis.auth.accessToken).toBe('test_access_token')
+		expect(mtaTestAnalysis.tokener.accessToken).toBe('test_access_token')
 	})
 
 	it('getRetain success', async () => {
@@ -65,7 +65,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -125,7 +125,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -186,7 +186,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -269,7 +269,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -318,7 +318,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token'
@@ -386,7 +386,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -493,7 +493,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -548,7 +548,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',
@@ -608,7 +608,7 @@ describe('Testing Analysis module', () => {
 		const mtaTestAnalysis = new MtaTestAnalysis({
 			appid,
 			secret,
-			auth: new MtaWechatMpAuth({
+			tokener: new MtaWechatMpTokener({
 				appid,
 				secret,
 				accessToken: 'test_access_token',

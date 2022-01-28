@@ -1,6 +1,7 @@
 import { MtaWechatMpAnalysis } from './analysis'
 import { MtaWechatMpAuth } from './auth'
 import { MtaWechatMpCloud } from './cloud'
+import { MtaWechatMpTokener } from './tokener'
 import { dayjs } from './util'
 
 // export types
@@ -14,6 +15,8 @@ export class MtaWechatMp {
 	readonly proxy: {
 		proxyUrl?: string
 	} = {}
+
+	readonly tokener: MtaWechatMpTokener
 
 	readonly auth: MtaWechatMpAuth
 
@@ -39,11 +42,23 @@ export class MtaWechatMp {
 		this.proxy = option.proxy || {}
 		this.tz = option.tz || dayjs.tz.guess()
 
-		// auth
-		this.auth = new MtaWechatMpAuth({
+		// tokener
+		this.tokener = new MtaWechatMpTokener({
 			appid: option.appid,
 			secret: option.secret,
 			proxy: option.proxy
+		})
+
+		// auth
+		this.auth = new MtaWechatMpAuth({
+			...option,
+			tokener: this.tokener
+		})
+
+		// analysis instance
+		this.analysis = new MtaWechatMpAnalysis({
+			...option,
+			tokener: this.tokener
 		})
 
 		// cloud instances
@@ -52,14 +67,8 @@ export class MtaWechatMp {
 				appid: option.appid,
 				secret: option.secret,
 				env: option.cloudEnvs[cloudName],
-				auth: this.auth
+				tokener: this.tokener
 			})
 		}
-
-		// analysis instance
-		this.analysis = new MtaWechatMpAnalysis({
-			...option,
-			auth: this.auth
-		})
 	}
 }
